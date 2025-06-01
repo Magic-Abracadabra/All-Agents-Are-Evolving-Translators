@@ -8,7 +8,7 @@ class w():
 		if type(G)==list and type(l)==int and l>=0 and l==W0.l+1:
 			pass
 		else:
-			raise ValueError('at least one of them wrong: level l; representative element W0; tag T; generation rule G')
+			raise ValueError('At least one of them wrong: level l; representative element W0; tag T; generation rule G')
 		self.l = l
 		self.W0 = W0
 		self.T = T
