@@ -21,7 +21,7 @@ class w():
 
 class s():
 	def __init__(self, l, words=None):
-		if all(list(map(lambda x: x[0]==l and type(x)==tuple and len(x)==3, words))) and type(words)==list:
+		if all(list(map(lambda x: x[0]==l and type(x)==list and len(x)==3, words))) and type(words)==list:
 			self.s = words
 		elif words==None:
 			self.s = []
@@ -31,7 +31,7 @@ class s():
 	def __eq__(self, target):
 		return self.s==target.s
 	def insert(self, word, position=None):
-		if all([self.l==word[0], type(word)==tuple, len(word)==3]):
+		if all([self.l==word[0], type(word)==list, len(word)==3]):
 			if position==None:
 				self.s.append(word)
 			else:
@@ -45,19 +45,28 @@ class nss():
 		self.words = []
 		try:
 			for id, word in pairs:
-				assert all([type(id)==tuple, len(id)==3, type(id[0])==int, type(word)==w, word.l==id[0]])
+				assert all([type(id)==list, len(id)==3, type(id[0])==int, type(word)==w, word.l==id[0]])
 				assert id not in self.ids; assert word not in self.words
 				self.ids.append(id); self.words.append(word)
 		except:
 			raise TypeError('Not pairwise (id triple, word) or Repetitive!')
 	def __call__(self, target):
-		if type(target)==tuple:
+		if type(target)==list:
 			return self.words[self.ids.index(target)]
 		elif type(target)==w:
 			return self.ids[self.words.index(target)]
 		else:
 			raise TypeError
 	def insert(self, id, word):
-		assert all([type(id)==tuple, len(id)==3, type(id[0])==int, type(word)==w, word.l==id[0]])
+		assert all([type(id)==list, len(id)==3, type(id[0])==int, type(word)==w, word.l==id[0]])
 		assert id not in self.ids; assert word not in self.words
 		self.ids.append(id); self.words.append(word)
+	def receptor_grows(self, l):
+		receptor = []
+		for coordinate in self.ids:
+			if coordinate[0]==l:
+				word = self(coordinate)
+				for probe in list(map(lambda x: x.s, word.W)):
+					receptor.append([probe, coordinate])
+		receptor.sort(key=lambda x: len(x[0]), reverse=True)
+		return receptor
