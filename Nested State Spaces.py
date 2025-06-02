@@ -20,36 +20,26 @@ class w():
 		return all([self.l==target.l, self.W0==target.W0, self.T==target.T, self.G==target.G, self.W==target.W])
 
 class s():
-	def __init__(self, l, words=None):
+	def __init__(self, l, words):
 		if all(list(map(lambda x: x[0]==l and type(x)==list and len(x)==3, words))) and type(words)==list:
 			self.s = words
-		elif words==None:
-			self.s = []
 		else:
 			raise ValueError(f'Cannot form a list of words at level {l}!')
 		self.l = l
 	def __eq__(self, target):
 		return self.s==target.s
-	def insert(self, word, position=None):
-		if all([self.l==word[0], type(word)==list, len(word)==3]):
-			if position==None:
-				self.s.append(word)
-			else:
-				self.s.insert(position, word)
-		else:
-			raise ValueError('Level Error or Position Error!')
 
 class nss():
 	def __init__(self, pairs=[]):
 		self.ids = []
 		self.words = []
 		try:
-			for id, word in pairs:
-				assert all([type(id)==list, len(id)==3, type(id[0])==int, type(word)==w, word.l==id[0]])
-				assert id not in self.ids; assert word not in self.words
-				self.ids.append(id); self.words.append(word)
+			for ID, word in pairs:
+				assert all([type(ID)==list, len(ID)==3, type(ID[0])==int, type(word)==w, word.l==ID[0]])
+				assert ID not in self.ids; assert word not in self.words
+				self.ids.append(ID); self.words.append(word)
 		except:
-			raise TypeError('Not pairwise (id triple, word) or Repetitive!')
+			raise TypeError('Not pairwise (ID triple, word) or Repetitive!')
 	def __call__(self, target):
 		if type(target)==list:
 			return self.words[self.ids.index(target)]
@@ -57,10 +47,11 @@ class nss():
 			return self.ids[self.words.index(target)]
 		else:
 			raise TypeError
-	def insert(self, id, word):
-		assert all([type(id)==list, len(id)==3, type(id[0])==int, type(word)==w, word.l==id[0]])
-		assert id not in self.ids; assert word not in self.words
-		self.ids.append(id); self.words.append(word)
+	def insert(self, word):
+		assert type(word)==w
+		ID = [word.l, word.T, word.W0.s]
+		assert ID not in self.ids; assert word not in self.words
+		self.ids.append(ID); self.words.append(word)
 	def receptor_grows(self, l):
 		receptor = []
 		for coordinate in self.ids:
