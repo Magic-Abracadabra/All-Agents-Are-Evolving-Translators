@@ -21,7 +21,7 @@ class w():
 
 class s():
 	def __init__(self, l, words):
-		if all(list(map(lambda x: x[0]==l and type(x)==list and len(x)==3, words))) and type(words)==list:
+		if type(words)==list and all(list(map(lambda x: x[0]==l and type(x)==list and len(x)==3, words))):
 			self.s = words
 		else:
 			raise ValueError(f'Cannot form a list of words at level {l}!')
@@ -52,6 +52,11 @@ class nss():
 		ID = [word.l, word.T, word.W0.s]
 		assert ID not in self.ids; assert word not in self.words
 		self.ids.append(ID); self.words.append(word)
+	def remove(self, word):
+		assert type(word)==w
+		ID = self(word)
+		assert ID in self.ids; assert word in self.words
+		self.ids.remove(ID); self.words.remove(word)
 	def receptor_grows(self, l):
 		receptor = []
 		for coordinate in self.ids:
