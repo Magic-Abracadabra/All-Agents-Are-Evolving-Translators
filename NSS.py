@@ -62,25 +62,16 @@ class nss():
 		for coordinate in self.ids:
 			if coordinate[0]==l:
 				word = self(coordinate)
-				for probe in list(map(lambda x: x.s, word.W)):
+				for probe in map(lambda x: x.s, word.W):
 					receptor.append([probe, coordinate])
 		receptor.sort(key=lambda x: len(x[0]), reverse=True)
 		return receptor
 	def level(self):
 		return sorted(self.ids, reverse=True)[0][0]
-	def data(self):
-		IDs = ()
-		sorted_ids = sorted(self.ids, reverse=True)
-		sorted_ids = map(lambda x: self(x), sorted_ids)
-		L_pre = self.level()
-		exec(f'ID{L_pre}=None')
-		for item in sorted_ids:
-			L = item.G[0].l
-			if L < L_pre:
-				exec(f'ID{L}= ()')
-				L_pre = L
-				IDs += (eval(f'ID{L+1}'), )
-			exec(f'ID{L} += ((item.T, list(map(lambda x: x.s, item.G))), )')
-		IDs += (eval(f'ID{L}'), )
-		IDs = IDs[1:]
-		return IDs
+	def generator_grows(self, l):
+		generator = []
+		for coordinate in self.ids:
+			if coordinate[0]==l:
+				word = self(coordinate)
+				generator.append([word.W0.s, list(map(lambda x: x.s, word.W))])
+		return generator
