@@ -57,6 +57,8 @@ class nss():
 		ID = self(word)
 		assert ID in self.ids; assert word in self.words
 		self.ids.remove(ID); self.words.remove(word)
+	def level(self):
+		return sorted(self.ids, reverse=True)[0][0]
 	def receptor_grows(self, l):
 		receptor = []
 		for coordinate in self.ids:
@@ -66,8 +68,6 @@ class nss():
 					receptor.append([probe, coordinate])
 		receptor.sort(key=lambda x: len(x[0]), reverse=True)
 		return receptor
-	def level(self):
-		return sorted(self.ids, reverse=True)[0][0]
 	def generator_grows(self, l):
 		generator = []
 		for coordinate in self.ids:
@@ -75,3 +75,11 @@ class nss():
 				word = self(coordinate)
 				generator.append([word.W0.s, list(map(lambda x: x.s, word.W))])
 		return generator
+	def W(self, W0):
+		for idx, ID in enumerate(self.ids):
+			if ID[-1]==W0:
+				return list(map(lambda x: x.s, self.words[idx].W))
+	def W0(self, Wi):
+		for idx, word in enumerate(self.words):
+			if Wi in map(lambda x: x.s, word.W):
+				return word.W0.s
