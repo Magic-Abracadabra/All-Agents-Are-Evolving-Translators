@@ -57,7 +57,8 @@ class nss():
 		ID = self(word)
 		assert ID in self.ids; assert word in self.words
 		self.ids.remove(ID); self.words.remove(word)
-	def level(self):
+	def levels(self):
+		assert self.ids!=[] and self.words!=[]
 		return sorted(self.ids, reverse=True)[0][0]
 	def receptor_grows(self, l):
 		receptor = []
