@@ -1,7 +1,9 @@
 class s0():
 	def __init__(self, s):
 		self.s = s
-		self.l = 0	
+		self.l = 0
+	def __eq__(self, target):
+		return all([self.l==target.l, self.s==target.s])
 
 class w():
 	def __init__(self, l, W0, T=None, G=[]):
@@ -13,9 +15,8 @@ class w():
 		self.W0 = W0
 		self.T = T
 		self.G = G
-		self.W = []
-		for item in G:
-			self.W.append(item)
+		# To simplify, here we set:
+		self.W = self.G
 	def __eq__(self, target):
 		return all([self.l==target.l, self.W0==target.W0, self.T==target.T, self.G==target.G, self.W==target.W])
 
@@ -27,7 +28,7 @@ class s():
 			raise ValueError(f'Cannot form a list of words at level {l}!')
 		self.l = l
 	def __eq__(self, target):
-		return self.s==target.s
+		return all([self.l==target.l, self.s==target.s])
 
 class nss():
 	def __init__(self, pairs=[]):
@@ -40,47 +41,6 @@ class nss():
 				self.ids.append(ID); self.words.append(word)
 		except:
 			raise TypeError('Not pairwise (ID triple, word) or Repetitive!')
-	def __call__(self, target):
-		if type(target)==list:
-			return self.words[self.ids.index(target)]
-		elif type(target)==w:
-			return self.ids[self.words.index(target)]
-		else:
-			raise TypeError
-	def insert(self, word):
-		assert type(word)==w
-		ID = [word.l, word.T, word.W0.s]
-		assert ID not in self.ids; assert word not in self.words
-		self.ids.append(ID); self.words.append(word)
-	def remove(self, word):
-		assert type(word)==w
-		ID = self(word)
-		assert ID in self.ids; assert word in self.words
-		self.ids.remove(ID); self.words.remove(word)
 	def levels(self):
 		assert self.ids!=[] and self.words!=[]
 		return sorted(self.ids, reverse=True)[0][0]
-	def receptor_grows(self, l):
-		receptor = []
-		for coordinate in self.ids:
-			if coordinate[0]==l:
-				word = self(coordinate)
-				for probe in map(lambda x: x.s, word.W):
-					receptor.append([probe, coordinate])
-		receptor.sort(key=lambda x: len(x[0]), reverse=True)
-		return receptor
-	def generator_grows(self, l):
-		generator = []
-		for coordinate in self.ids:
-			if coordinate[0]==l:
-				word = self(coordinate)
-				generator.append([word.W0.s, list(map(lambda x: x.s, word.W))])
-		return generator
-	def W(self, W0):
-		for idx, ID in enumerate(self.ids):
-			if ID[-1]==W0:
-				return list(map(lambda x: x.s, self.words[idx].W))
-	def W0(self, Wi):
-		for idx, word in enumerate(self.words):
-			if Wi in map(lambda x: x.s, word.W):
-				return word.W0.s
