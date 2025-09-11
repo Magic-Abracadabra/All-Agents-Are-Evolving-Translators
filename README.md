@@ -1,4 +1,9 @@
 # All Agents Are Evolving Translators
+## Trends in Future AIs
+1. Risk-sensitive and confidential scenarios that requires fast response: Expert Systems
+2. Knowledge graphs should be executable expert systems
+3. Train expert systems using DL, RL, optimization, etc.
+4. The boundaries of Agents and MLLMs will be broken.
 ## Magic
 This is a platform in favor of:
 Grammatical Correction, Speech or Remote Control, Constructing Self-Defined Command, Interaction with Other Programming Languages, Computing Numbers, Screenshot, Easy File Management, History Conversation, Streaming Answering, Interactive Interface (collaborated with Lee), Natural Language to Command Codes (see our research proposal for more details).
